@@ -10,111 +10,110 @@
 body {
   margin: 0;
   height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(-45deg, #0a0a0a, #1a0010, #0a0a0a, #140014);
-  background-size: 400% 400%;
-  animation: bgMove 15s ease infinite;
-  overflow: hidden;
+  background: radial-gradient(circle at center, #0a0010, #000000 80%);
+  font-family: Arial, sans-serif;
+  color: #ff4da6;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-@keyframes bgMove {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
+/* CONTENITORE */
 .container {
   text-align: center;
-  padding: 40px;
-  border-radius: 25px;
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 40px rgba(255,0,120,0.2);
-  animation: fadeIn 1.5s ease;
+  padding: 50px;
+  border-radius: 20px;
+  background: rgba(255, 0, 120, 0.05);
+  box-shadow: 0 0 60px rgba(255, 0, 120, 0.25);
+  backdrop-filter: blur(15px);
 }
 
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(30px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
+/* TESTO GLOW */
 h1 {
-  font-size: 2.8rem;
-  letter-spacing: 3px;
-  margin-bottom: 10px;
+  font-size: 3rem;
+  letter-spacing: 4px;
+  text-shadow: 
+    0 0 10px #ff007f,
+    0 0 20px #ff007f,
+    0 0 40px #ff007f;
 }
 
 .subtitle {
-  opacity: 0.7;
-  margin-bottom: 20px;
+  opacity: 0.8;
+  margin-top: 10px;
+  text-shadow: 0 0 10px #ff007f;
 }
 
+/* TIMER */
 #timer {
-  font-size: 1.4rem;
-  margin: 20px 0;
+  font-size: 1.5rem;
+  margin: 25px 0;
+  text-shadow: 0 0 15px #ff4da6;
 }
 
+/* BOTTONE */
 button {
-  padding: 15px 35px;
+  padding: 15px 40px;
   font-size: 1.2rem;
+  border-radius: 40px;
   border: none;
-  border-radius: 30px;
-  background: linear-gradient(45deg, #ff007f, #ff4da6);
-  color: white;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(255,0,120,0.6);
+  color: white;
+  background: #ff007f;
+  box-shadow: 
+    0 0 10px #ff007f,
+    0 0 30px #ff007f,
+    inset 0 0 10px #ff4da6;
   transition: 0.3s;
 }
 
 button:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 35px rgba(255,0,120,1);
+  transform: scale(1.1);
+  box-shadow: 
+    0 0 20px #ff007f,
+    0 0 60px #ff007f,
+    inset 0 0 20px #ff4da6;
 }
 
+/* CUORI */
 .heart {
   position: absolute;
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   background: #ff4da6;
   transform: rotate(45deg);
-  animation: floatUp linear infinite;
-  opacity: 0.5;
-  filter: blur(0.5px);
+  animation: float 8s linear infinite;
+  opacity: 0.6;
+  filter: blur(1px);
 }
 
 .heart::before,
 .heart::after {
   content: "";
   position: absolute;
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   background: #ff4da6;
   border-radius: 50%;
 }
 
 .heart::before {
-  top: -7px;
+  top: -6px;
 }
 
 .heart::after {
-  left: -7px;
+  left: -6px;
 }
 
-@keyframes floatUp {
+@keyframes float {
   from {
     transform: translateY(100vh) rotate(45deg);
-    opacity: 0;
   }
-  20% {opacity: 0.6;}
   to {
     transform: translateY(-10vh) rotate(45deg);
-    opacity: 0;
   }
 }
-
 </style>
 </head>
 
@@ -122,58 +121,58 @@ button:hover {
 
 <div class="container">
   <h1>DAHLIA DROP</h1>
-  <div class="subtitle">available for 24 hours</div>
+  <div class="subtitle">available for a limited time</div>
   <div id="timer"></div>
   <button id="btn" onclick="download()">DOWNLOAD</button>
 </div>
 
 <script>
 
-// TIMER 24H
-const end = new Date().getTime() + 24*60*60*1000;
+// 👉 METTI UNA DATA REALE (IMPORTANTISSIMO)
+// formato: "YYYY-MM-DDTHH:MM:SS"
+const endTime = new Date("2026-05-01T23:59:00").getTime();
+
 const timer = document.getElementById("timer");
 const btn = document.getElementById("btn");
 
-function update() {
+function updateTimer() {
   const now = new Date().getTime();
-  const d = end - now;
+  const diff = endTime - now;
 
-  if (d <= 0) {
+  if (diff <= 0) {
     timer.innerHTML = "DROP TERMINATO";
     btn.style.display = "none";
     return;
   }
 
-  const h = Math.floor((d/(1000*60*60)) % 24);
-  const m = Math.floor((d/(1000*60)) % 60);
-  const s = Math.floor((d/1000) % 60);
+  const h = Math.floor(diff / (1000*60*60));
+  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const s = Math.floor((diff % (1000*60)) / 1000);
 
   timer.innerHTML = `${h}h ${m}m ${s}s`;
 }
 
-setInterval(update, 1000);
+setInterval(updateTimer, 1000);
+updateTimer();
 
-// DOWNLOAD LINK
+// DOWNLOAD
 function download() {
   window.location.href = "https://www.mediafire.com/file/5bc5qtgq775ob0t/DAHLIAV2.0.apk/file";
 }
 
-// CUORI DINAMICI
-function heart() {
+// CUORI
+function spawnHeart() {
   const h = document.createElement("div");
   h.className = "heart";
   h.style.left = Math.random() * 100 + "vw";
-  h.style.animationDuration = (6 + Math.random()*6) + "s";
-
+  h.style.animationDuration = (5 + Math.random()*5) + "s";
   document.body.appendChild(h);
-
-  setTimeout(() => h.remove(), 12000);
+  setTimeout(() => h.remove(), 10000);
 }
 
-setInterval(heart, 250);
+setInterval(spawnHeart, 200);
 
 </script>
 
 </body>
 </html>
-
