@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>DAHLIA APK DROP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    #timer {
+      font-size: 1.5rem;
+      margin: 20px 0;
+    }
+
+    #downloadBtn {
+      padding: 15px 30px;
+      background: #ff007f;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border-radius: 30px;
+      transition: 0.3s;
+    }
+
+    #downloadBtn:hover {
+      background: #ff4da6;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff007f;
+      transform: rotate(45deg);
+      animation: float 10s linear infinite;
+      opacity: 0.7;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff007f;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(100vh) rotate(45deg);
+      }
+      to {
+        transform: translateY(-10vh) rotate(45deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>DAHLIA APK — LIMITED DROP</h1>
+  <div id="timer"></div>
+  <button id="downloadBtn" onclick="downloadAPK()">DOWNLOAD</button>
+
+  <script>
+    // 👉 SETTA QUI LA SCADENZA (24H)
+    const endTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+
+    const timerEl = document.getElementById("timer");
+    const btn = document.getElementById("downloadBtn");
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const distance = endTime - now;
+
+      if (distance <= 0) {
+        timerEl.innerHTML = "DROP TERMINATO";
+        btn.style.display = "none";
+        return;
+      }
+
+      const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+      const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+      const seconds = Math.floor((distance % (1000*60)) / 1000);
+
+      timerEl.innerHTML = hours + "h " + minutes + "m " + seconds + "s";
+    }
+
+    setInterval(updateTimer, 1000);
+
+    function downloadAPK() {
+      // 👉 METTI QUI IL TUO LINK APK
+      window.location.href = "https://www.mediafire.com/file/5bc5qtgq775ob0t/DAHLIAV2.0.apk/file";
+    }
+
+    // Genera cuori
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (5 + Math.random() * 5) + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+
+    setInterval(createHeart, 300);
+  </script>
+
+</body>
+</html>
